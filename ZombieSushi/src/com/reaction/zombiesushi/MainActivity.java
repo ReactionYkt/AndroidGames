@@ -27,7 +27,8 @@ public class MainActivity extends SimpleBaseGameActivity {
 	@Override
 	protected void onCreateResources() {
 		ScreenManager.init(this);
-		Textures.load(this, this.getEngine());
+		Textures.init(this);
+		Textures.load();
 		menuScreen = new MenuScreen(this);
 	}
 
