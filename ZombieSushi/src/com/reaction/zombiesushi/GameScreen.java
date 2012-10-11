@@ -27,7 +27,7 @@ public class GameScreen extends Screen {
 		float posY = game.getEngine().getCamera().getCenterY()
 				- Textures.cookTextureRegion.getHeight() / 2;
 		
-		AnimatedSprite cook = new AnimatedSprite(posX, posY,
+		final AnimatedSprite cook = new AnimatedSprite(posX, posY,
 				Textures.cookTextureRegion, game.getVertexBufferObjectManager());
 		AnimatedSprite feet = new AnimatedSprite(posX + 38, posY + 99,
 				Textures.feetTextureRegion, game.getVertexBufferObjectManager());
@@ -36,13 +36,14 @@ public class GameScreen extends Screen {
 			
 			@Override
 			public boolean onAreaTouched(TouchEvent event, float x, float y){
-				this.animate(100);
+				this.animate(100, false);
+				cook.animate(100, false);
 				return true;
 			}
 			
 		};
 		
-		cook.animate(100);
+		//cook.animate(100);
 		feet.animate(100);
 		//toggleButton.animate(100);
 		scene.attachChild(cook);
