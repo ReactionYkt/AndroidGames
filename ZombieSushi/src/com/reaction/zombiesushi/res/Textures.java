@@ -14,9 +14,6 @@ public class Textures {
 	public static BitmapTextureAtlas startButtonTextureAtlas;
 	public static TextureRegion startButtonTextureRegion;
 	
-	public static BitmapTextureAtlas bananaTextureAtlas;
-	public static TiledTextureRegion bananaTextureRegion;
-	
 	public static BitmapTextureAtlas cookTextureAtlas;
 	public static TiledTextureRegion cookTextureRegion;
 	
@@ -25,6 +22,9 @@ public class Textures {
 	
 	public static BitmapTextureAtlas toggleButtonTextureAtlas;
 	public static TiledTextureRegion toggleButtonTextureRegion;
+	
+	public static BitmapTextureAtlas backgroundTextureAtlas;
+	public static TextureRegion backgroundTextureRegion;
 
 	public static void init(final SimpleBaseGameActivity activity) {
 		Log.i("ZombieSushi", "onLoadResources");
@@ -34,11 +34,6 @@ public class Textures {
 	    		.createFromAsset(startButtonTextureAtlas, activity,
 	    				"start.png", 0, 0);
 	    
-	    bananaTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 132, 70, TextureOptions.BILINEAR);
-		bananaTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createTiledFromAsset(bananaTextureAtlas, activity,
-						"banana_tiled.png", 0, 0, 4, 2);
-		
 		cookTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 552, 354, TextureOptions.BILINEAR);
 		cookTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(cookTextureAtlas, activity, 
@@ -54,14 +49,19 @@ public class Textures {
 				.createTiledFromAsset(toggleButtonTextureAtlas, activity, 
 						"toggle_button.png", 0, 0, 2, 1);
 		
+		backgroundTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 800, 480, TextureOptions.BILINEAR);
+		backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(backgroundTextureAtlas, activity, 
+						"bg.png", 0, 0);
+		
 	}
 	
 	public static void load(){
 	    startButtonTextureAtlas.load();
-	    bananaTextureAtlas.load();
 	    cookTextureAtlas.load();
 	    feetTextureAtlas.load();
 	    toggleButtonTextureAtlas.load();
+	    backgroundTextureAtlas.load();
 	}
 
 }
