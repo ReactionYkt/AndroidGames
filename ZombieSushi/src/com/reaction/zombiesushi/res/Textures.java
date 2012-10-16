@@ -3,6 +3,7 @@ package com.reaction.zombiesushi.res;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TiledTextureRegion;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
@@ -62,6 +63,10 @@ public class Textures {
 	    feetTextureAtlas.load();
 	    toggleButtonTextureAtlas.load();
 	    backgroundTextureAtlas.load();
+	}
+	
+	public static ITextureRegion getTextureRegionByNamType(int type){
+		return null;
 	}
 
 }

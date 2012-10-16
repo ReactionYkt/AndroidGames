@@ -18,8 +18,8 @@ import org.andengine.util.color.Color;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.reaction.zombiesushi.core.Screen;
 import com.reaction.zombiesushi.model.Cook;
 import com.reaction.zombiesushi.res.Textures;
@@ -96,6 +96,7 @@ public class GameScreen extends Screen {
 		cookFeet.setUserData(body);
 		
 		BoundCamera camera = (BoundCamera) game.getEngine().getCamera();
+		
 		camera.setChaseEntity(cookFeet);
 		HUD hud = new HUD();
 		hud.attachChild(toggleButton);
