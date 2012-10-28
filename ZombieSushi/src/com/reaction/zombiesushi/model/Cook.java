@@ -9,32 +9,43 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 
 public class Cook {
-	
+
 	private AnimatedSprite body;
 	private AnimatedSprite feet;
-	private boolean isInFlight;
+	private boolean inFlight;
+	private boolean hits;
 
-	public Cook(float posX, float posY, ITiledTextureRegion pBodyTextureRegion, ITiledTextureRegion pFeetTextureRegion,
+	public Cook(float posX, float posY, ITiledTextureRegion pBodyTextureRegion,
+			ITiledTextureRegion pFeetTextureRegion,
 			VertexBufferObjectManager pVertexBufferObjectManager) {
-		body = new AnimatedSprite(posX, posY, pBodyTextureRegion, pVertexBufferObjectManager){
-			
+		body = new AnimatedSprite(posX, posY, pBodyTextureRegion,
+				pVertexBufferObjectManager) {
+
 			@Override
-			protected void onManagedUpdate(final float pSecondsElapsed){
+			protected void onManagedUpdate(final float pSecondsElapsed) {
 				this.setPosition(feet.getX() - 38, feet.getY() - 99);
-				Body body = (Body)feet.getUserData();
-				if(body.getLinearVelocity().y == 0){
-					isInFlight = false;
+				Body physicBody = (Body) feet.getUserData();
+				if (physicBody.getLinearVelocity().y == 0) {
+					inFlight = false;
 				} else {
-					isInFlight = true;
+					inFlight = true;
+				}
+				int currentFrame = body.getCurrentTileIndex();
+				if (currentFrame >= 3 && currentFrame <= 10) {
+					hits = true;
+				} else {
+					hits = false;
 				}
 				super.onManagedUpdate(pSecondsElapsed);
 			}
-			
+
 		};
-		feet = new AnimatedSprite(posX + 38, posY + 99, pFeetTextureRegion, pVertexBufferObjectManager);
-		isInFlight = false;
+		feet = new AnimatedSprite(posX + 38, posY + 99, pFeetTextureRegion,
+				pVertexBufferObjectManager);
+		inFlight = false;
+		hits = false;
 	}
-	
+
 	public AnimatedSprite getBody() {
 		return body;
 	}
@@ -42,17 +53,25 @@ public class Cook {
 	public AnimatedSprite getFeet() {
 		return feet;
 	}
-	
+
 	public boolean isInFlight() {
-		return isInFlight;
+		return inFlight;
 	}
-	
-	public void jump(final AnimatedSprite face){
-		final Body body = (Body)face.getUserData();
+
+	public boolean isHits() {
+		return hits;
+	}
+
+	public void setHits(boolean hits) {
+		this.hits = hits;
+	}
+
+	public void jump(final AnimatedSprite face) {
+		final Body body = (Body) face.getUserData();
 		final Vector2 velocity = Vector2Pool.obtain(0, 9.8f * -1);
 		body.setLinearVelocity(velocity);
 		Vector2Pool.recycle(velocity);
-		isInFlight = true;
+		inFlight = true;
 	}
 
 }

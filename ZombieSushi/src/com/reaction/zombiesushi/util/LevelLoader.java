@@ -27,7 +27,7 @@ public class LevelLoader {
 		this.level = level;
 		try {
 			DocumentBuilder db = dbf.newDocumentBuilder();
-			document = db.parse(level.getAbsolutePath());
+			document = db.parse(level.getInputStream());
 		} catch (ParserConfigurationException pce) {
 			pce.printStackTrace();
 		} catch (SAXException se) {
@@ -44,7 +44,7 @@ public class LevelLoader {
 
 	private void parseDocument() {
 		Element rootElement = document.getDocumentElement();
-		NodeList layerNodes = rootElement.getElementsByTagName("firstLayer");
+		NodeList layerNodes = rootElement.getElementsByTagName("entity");
 		if (layerNodes != null && layerNodes.getLength() > 0) {
 			for (int i = 0; i < layerNodes.getLength(); i++) {
 				Element element = (Element) layerNodes.item(i);
@@ -59,13 +59,13 @@ public class LevelLoader {
 		float width = NumberUtils.stringToFloat(element.getAttribute("width"));
 		float height = NumberUtils.stringToFloat(element.getAttribute("height"));
 		int type = NumberUtils.stringToInt(element.getAttribute("type"));
-		int depth = NumberUtils.stringToInt(element.getAttribute("depth"));
+		int depth = NumberUtils.stringToInt(element.getAttribute("layer"));
 		switch (depth) {
 			case 1:
-				level.addSpriteToFirstLayer(Textures.getTextureRegionByNamType(type), x, y, width, height);
+				level.addSpriteToFirstLayer(Textures.getTextureRegionByType(1, type), x, y, width, height);
 				break;
 			case 2:
-				level.addSpriteToSecondLayer(Textures.getTextureRegionByNamType(type), x, y, width, height);
+				level.addSpriteToSecondLayer(Textures.getTextureRegionByType(2, type), x, y, width, height);
 				break;
 			default:
 				break;

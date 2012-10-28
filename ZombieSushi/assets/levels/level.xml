@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level>
+  <entity x="0" y="313" width="99" height="147" type="1" layer="1" />
+  <entity x="300" y="313" width="99" height="147" type="2" layer="1" />
+  <entity x="600" y="334" width="238" height="126" type="3" layer="1" />
+  <entity x="900" y="313" width="99" height="147" type="1" layer="1" />
+  <entity x="1200" y="313" width="99" height="147" type="2" layer="1" />
+  <entity x="1500" y="334" width="238" height="126" type="3" layer="1" />
+  <entity x="0" y="293" width="235" height="167" type="1" layer="2" />
+  <entity x="300" y="293" width="499" height="167" type="2" layer="2" />
+  <entity x="850" y="293" width="453" height="167" type="3" layer="2" />
+</level>
