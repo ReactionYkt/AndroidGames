@@ -1,5 +1,7 @@
 package com.reaction.zombiesushi;
 
+import java.util.Random;
+
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.engine.camera.hud.HUD;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -15,6 +17,7 @@ import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.extension.physics.box2d.util.Vector2Pool;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
+import org.andengine.util.adt.pool.GenericPool;
 import org.andengine.util.color.Color;
 
 import android.util.Log;
@@ -35,12 +38,47 @@ public class GameScreen extends Screen {
 	private float CAMERA_WIDTH;
 	private float CAMERA_HEIGHT;
 	private PhysicsWorld mPhysicsWorld;
+	private Cook cook;
 	private Body cookPhysicBody;
-	//private Body zombiePhysicBody;
+	// private Body zombiePhysicBody;
+	private static GenericPool<Zombie> zombiePool;
+	private Random rg;
+	private float timer;
 
 	public GameScreen(final SimpleBaseGameActivity game) {
 		super(game);
 		scene.setBackground(new Background(Color.CYAN));
+		rg = new Random();
+		zombiePool = new GenericPool<Zombie>() {
+
+			@Override
+			protected Zombie onAllocatePoolItem() {
+				return new Zombie(900, 400,
+						game.getVertexBufferObjectManager(), cook, this);
+			}
+
+		};
+
+		timer = 0;
+
+		scene.registerUpdateHandler(new IUpdateHandler() {
+
+			@Override
+			public void onUpdate(float pSecondsElapsed) {
+				timer += pSecondsElapsed;
+				if (timer > 1) {
+					if (rg.nextInt(100) < 75) {
+						addZombie();
+					}
+					timer = 0;
+				}
+			}
+
+			@Override
+			public void reset() {
+			}
+
+		});
 
 		CAMERA_WIDTH = game.getEngine().getCamera().getWidth();
 		CAMERA_HEIGHT = game.getEngine().getCamera().getHeight();
@@ -55,38 +93,23 @@ public class GameScreen extends Screen {
 				game.getVertexBufferObjectManager()));
 
 		// cook sprites
-		final Cook cook = new Cook(posX, posY, Textures.cookTextureRegion,
+		cook = new Cook(posX, posY, Textures.cookTextureRegion,
 				Textures.feetTextureRegion, game.getVertexBufferObjectManager());
 		final AnimatedSprite cookBody = cook.getBody();
 		final AnimatedSprite cookFeet = cook.getFeet();
-		
-		//zombie
-		/*final AnimatedSprite zombie = new AnimatedSprite(400, 400,
-				Textures.walkingZombieRegion,
-				game.getVertexBufferObjectManager());*/
-		
-		Zombie zombie = new Zombie(400, 400, game.getVertexBufferObjectManager());
-		zombie.setVelocityX(-20);
+
+		// zombie
+		/*
+		 * final AnimatedSprite zombie = new AnimatedSprite(400, 400,
+		 * Textures.walkingZombieRegion, game.getVertexBufferObjectManager());
+		 */
+
+		Zombie zombie = new Zombie(400, 400,
+				game.getVertexBufferObjectManager(), cook, null);
+		zombie.setVelocityX(-55);
 		final AnimatedSprite walkingZombie = zombie.getWalkingZombie();
 		final AnimatedSprite bleedingZombie = zombie.getBleedingZombie();
-		
-		walkingZombie.registerUpdateHandler(new IUpdateHandler(){
 
-			@Override
-			public void onUpdate(float pSecondsElapsed) {
-				if(walkingZombie.collidesWith(cookBody) && cook.isHits()){
-					walkingZombie.setVisible(false);
-					bleedingZombie.setVisible(true);
-					bleedingZombie.animate(100, false);
-				}
-			}
-
-			@Override
-			public void reset() {
-			}
-			
-		});
-		
 		// controls
 		AnimatedSprite toggleButton = new AnimatedSprite(CAMERA_WIDTH - 128,
 				CAMERA_HEIGHT - 128, Textures.toggleButtonTextureRegion,
@@ -134,16 +157,17 @@ public class GameScreen extends Screen {
 		PhysicsFactory.createBoxBody(this.mPhysicsWorld, ground,
 				BodyType.StaticBody, wallFixtureDef);
 
-		cookPhysicBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld, cookFeet,
-				BodyType.DynamicBody, objectFixtureDef);
-		
-		//zombiePhysicBody = PhysicsFactory.createBoxBody(mPhysicsWorld, zombie, BodyType.KinematicBody, objectFixtureDef);
+		cookPhysicBody = PhysicsFactory.createBoxBody(this.mPhysicsWorld,
+				cookFeet, BodyType.DynamicBody, objectFixtureDef);
+
+		// zombiePhysicBody = PhysicsFactory.createBoxBody(mPhysicsWorld,
+		// zombie, BodyType.KinematicBody, objectFixtureDef);
 
 		this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(
 				cookFeet, cookPhysicBody, true, true));
-		//this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(
-		//		zombie, zombiePhysicBody, true, true));
-		//zombiePhysicBody.setLinearVelocity(-2, 0);
+		// this.mPhysicsWorld.registerPhysicsConnector(new PhysicsConnector(
+		// zombie, zombiePhysicBody, true, true));
+		// zombiePhysicBody.setLinearVelocity(-2, 0);
 		this.mPhysicsWorld.setGravity(Vector2Pool.obtain(0, 9.8f));
 
 		cookFeet.setUserData(cookPhysicBody);
@@ -192,6 +216,20 @@ public class GameScreen extends Screen {
 
 	@Override
 	public void destroy() {
+	}
+
+	private void addZombie() {
+		Zombie zombie = zombiePool.obtainPoolItem();
+		zombie.setPosition(900, 400);
+		zombie.setVelocityX(-55);
+		zombie.getWalkingZombie().animate(100);
+		if (!zombie.getWalkingZombie().hasParent()) {
+			scene.attachChild(zombie.getWalkingZombie());
+			scene.attachChild(zombie.getBleedingZombie());
+		}
+		zombie.setDead(false);
+		zombie.getWalkingZombie().setVisible(true);
+		zombie.getWalkingZombie().setIgnoreUpdate(false);
 	}
 
 }
