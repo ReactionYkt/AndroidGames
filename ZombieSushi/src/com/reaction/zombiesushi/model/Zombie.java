@@ -7,66 +7,55 @@ import org.andengine.util.adt.pool.GenericPool;
 
 import com.reaction.zombiesushi.res.Textures;
 
-public class Zombie {
+public class Zombie extends AnimatedSprite {
 
-	private AnimatedSprite walkingZombie;
-	private AnimatedSprite bleedingZombie;
+	private static final int BYTE_START_FRAME = 4;
+	private static final int BYTE_END_FRAME = 10;
+	private static final int SCORE = 1;
+	private static final long[] WALK_FRAMES_DURATIONS = { 50, 50, 50, 50, 50,
+			50, 50, 50, 50, 50, 50, 50 };
+	private static final long[] DEATH_FRAMES_DURATIONS = { 50, 50, 50, 50, 50,
+			50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
+
 	private PhysicsHandler physicsHandler;
-	private boolean isDead;
+	private boolean dead;
+	private Cook cook;
+	private GenericPool<Zombie> pool;
+	private boolean done = false;
 
 	public Zombie(float x, float y,
-			VertexBufferObjectManager pVertexBufferObjectManager,
-			final Cook cook, final GenericPool<Zombie> pool) {
-		this.isDead = false;
-		walkingZombie = new AnimatedSprite(x, y, Textures.walkingZombieRegion,
-				pVertexBufferObjectManager) {
-
-			@Override
-			protected void onManagedUpdate(final float pSecondsElapsed) {
-				if (walkingZombie.collidesWith(cook.getBody()) && cook.isHits()) {
-					if (!Zombie.this.isDead) {
-						walkingZombie.stopAnimation();
-						walkingZombie.setVisible(false);
-						bleedingZombie.setVisible(true);
-						bleedingZombie.animate(100, false);
-						Zombie.this.isDead = true;
-					}
-				}
-				if(pool!=null){
-					if(walkingZombie.getX() + walkingZombie.getWidth() < 0 || walkingZombie.getY() > 480){
-						walkingZombie.setVisible(false);
-						bleedingZombie.setVisible(false);
-						walkingZombie.setIgnoreUpdate(true);
-						pool.recyclePoolItem(Zombie.this);
-					}
-				}
-				super.onManagedUpdate(pSecondsElapsed);
-			}
-
-		};
-		
-		bleedingZombie = new AnimatedSprite(x, y,
-				Textures.bleedingZombieRegion, pVertexBufferObjectManager) {
-
-			@Override
-			protected void onManagedUpdate(final float pSecondsElapsed) {
-				this.setPosition(walkingZombie.getX(), walkingZombie.getY());
-				super.onManagedUpdate(pSecondsElapsed);
-			}
-
-		};
-		bleedingZombie.setVisible(false);
-		physicsHandler = new PhysicsHandler(walkingZombie);
-		walkingZombie.registerUpdateHandler(physicsHandler);
-		// physicsHandler.setAccelerationY(9.8f);
+			VertexBufferObjectManager pVertexBufferObjectManager, Cook cook,
+			GenericPool<Zombie> pool) {
+		super(x, y, Textures.zombieRegion, pVertexBufferObjectManager);
+		this.cook = cook;
+		this.dead = false;
+		this.pool = pool;
+		physicsHandler = new PhysicsHandler(this);
+		this.registerUpdateHandler(physicsHandler);
 	}
 
-	public AnimatedSprite getWalkingZombie() {
-		return walkingZombie;
-	}
-
-	public AnimatedSprite getBleedingZombie() {
-		return bleedingZombie;
+	@Override
+	protected void onManagedUpdate(final float pSecondsElapsed) {
+		if (this.collidesWith(cook.getBodyBound())) {
+			if (cook.isAttacks()) {
+				if (!this.dead) {
+					this.playDeath();
+					this.dead = true;
+					this.cook.addScore(SCORE);
+				}
+			} else if (this.isBytes() && !done) {
+				cook.gotBitten();
+				done = true;
+			}
+		}
+		if (pool != null) {
+			if (this.getX() + this.getWidth() < 0 || this.getY() > 480) {
+				this.setVisible(false);
+				this.setIgnoreUpdate(true);
+				this.pool.recyclePoolItem(this);
+			}
+		}
+		super.onManagedUpdate(pSecondsElapsed);
 	}
 
 	public void setVelocityY(float yVelocity) {
@@ -76,17 +65,27 @@ public class Zombie {
 	public void setVelocityX(float yVelocity) {
 		this.physicsHandler.setVelocityX(yVelocity);
 	}
-	
-	public void setPosition(float x, float y){
-		this.walkingZombie.setPosition(x, y);
-	}
 
 	public boolean isDead() {
-		return isDead;
+		return dead;
 	}
 
-	public void setDead(boolean isDead) {
-		this.isDead = isDead;
+	public void setDead(boolean dead) {
+		this.dead = dead;
+	}
+
+	private boolean isBytes() {
+		int currentFrame = this.getCurrentTileIndex();
+		boolean result = currentFrame >= BYTE_START_FRAME && currentFrame <= BYTE_END_FRAME;
+		return result;
+	}
+
+	public void playWalk() {
+		this.animate(WALK_FRAMES_DURATIONS, 0, 11, true);
+	}
+
+	public void playDeath() {
+		this.animate(DEATH_FRAMES_DURATIONS, 12, 27, false);
 	}
 
 }

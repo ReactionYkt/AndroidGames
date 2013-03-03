@@ -37,12 +37,18 @@ public class Textures {
 	public static TextureRegion decor1;
 	public static TextureRegion decor2;
 	public static TextureRegion decor3;
-	
-	public static BitmapTextureAtlas walkingZombieAtlas;
-	public static TiledTextureRegion walkingZombieRegion;
-	
+
+	public static BitmapTextureAtlas zombieAtlas;
+	public static TiledTextureRegion zombieRegion;
+
 	public static BitmapTextureAtlas bleedingZombieAtlas;
 	public static TiledTextureRegion bleedingZombieRegion;
+
+	public static BitmapTextureAtlas HEART_ATLAS;
+	public static TextureRegion HEART_TEXTURE_REGION;
+
+	public static BitmapTextureAtlas gameOverAtlas;
+	public static TextureRegion gameOverTextureRegion;
 
 	public static void init(final SimpleBaseGameActivity activity) {
 		Log.i("ZombieSushi", "onLoadResources");
@@ -56,8 +62,8 @@ public class Textures {
 		cookTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(),
 				372, 833, TextureOptions.BILINEAR);
 		cookTextureRegion = BitmapTextureAtlasTextureRegionFactory
-				.createTiledFromAsset(cookTextureAtlas, activity,
-						"slash.png", 0, 0, 2, 7);
+				.createTiledFromAsset(cookTextureAtlas, activity, "slash.png",
+						0, 0, 2, 7);
 
 		feetTextureAtlas = new BitmapTextureAtlas(activity.getTextureManager(),
 				200, 150, TextureOptions.BILINEAR);
@@ -70,24 +76,23 @@ public class Textures {
 		toggleButtonTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createTiledFromAsset(toggleButtonTextureAtlas, activity,
 						"toggle_button.png", 0, 0, 2, 1);
-		
-		walkingZombieAtlas = new BitmapTextureAtlas(
-				activity.getTextureManager(), 256, 128, TextureOptions.BILINEAR);
-		walkingZombieRegion = BitmapTextureAtlasTextureRegionFactory
-				.createTiledFromAsset(walkingZombieAtlas, activity,
-						"zombie_walk.png", 0, 0, 2, 2);
-		
-		bleedingZombieAtlas = new BitmapTextureAtlas(
-				activity.getTextureManager(), 288, 412, TextureOptions.BILINEAR);
-		bleedingZombieRegion = BitmapTextureAtlasTextureRegionFactory
-				.createTiledFromAsset(bleedingZombieAtlas, activity,
-						"zombie_blood_tiled.png", 0, 0, 2, 4);
+
+		zombieAtlas = new BitmapTextureAtlas(activity.getTextureManager(), 540,
+				672, TextureOptions.BILINEAR);
+		zombieRegion = BitmapTextureAtlasTextureRegionFactory
+				.createTiledFromAsset(zombieAtlas, activity, "zombie.png", 0,
+						0, 4, 7);
 
 		backgroundTextureAtlas = new BitmapTextureAtlas(
 				activity.getTextureManager(), 800, 480, TextureOptions.BILINEAR);
 		backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory
 				.createFromAsset(backgroundTextureAtlas, activity, "bg.png", 0,
 						0);
+
+		gameOverAtlas = new BitmapTextureAtlas(activity.getTextureManager(),
+				320, 160, TextureOptions.BILINEAR);
+		gameOverTextureRegion = BitmapTextureAtlasTextureRegionFactory
+				.createFromAsset(gameOverAtlas, activity, "game-over.png", 0, 0);
 
 		level1Layer1Atlas = new BitmapTextureAtlas(
 				activity.getTextureManager(), 238, 273, TextureOptions.BILINEAR);
@@ -112,6 +117,13 @@ public class Textures {
 		decor3 = TextureRegionFactory.extractFromTexture(level1Layer2Atlas,
 				734, 0, 453, 167, false);
 
+		HEART_ATLAS = new BitmapTextureAtlas(activity.getTextureManager(), 8,
+				16, TextureOptions.BILINEAR);
+		BitmapTextureAtlasTextureRegionFactory.createFromAsset(HEART_ATLAS,
+				activity, "heart.png", 0, 0);
+		HEART_TEXTURE_REGION = TextureRegionFactory.extractFromTexture(
+				HEART_ATLAS, 0, 0, 8, 16);
+
 	}
 
 	public static void load() {
@@ -122,8 +134,9 @@ public class Textures {
 		backgroundTextureAtlas.load();
 		level1Layer1Atlas.load();
 		level1Layer2Atlas.load();
-		walkingZombieAtlas.load();
-		bleedingZombieAtlas.load();
+		zombieAtlas.load();
+		HEART_ATLAS.load();
+		gameOverAtlas.load();
 	}
 
 	public static ITextureRegion getTextureRegionByType(int layer, int type) {

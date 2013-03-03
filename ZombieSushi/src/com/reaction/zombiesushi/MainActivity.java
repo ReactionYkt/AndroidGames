@@ -8,6 +8,7 @@ import org.andengine.engine.options.resolutionpolicy.RatioResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 
+import com.reaction.zombiesushi.core.ScreenManager;
 import com.reaction.zombiesushi.res.Textures;
 
 public class MainActivity extends SimpleBaseGameActivity {
@@ -22,8 +23,10 @@ public class MainActivity extends SimpleBaseGameActivity {
 	@Override
 	public EngineOptions onCreateEngineOptions() {
 		camera = new BoundCamera(0, 0, CAMERA_WIDTH, CAMERA_HEIGHT);
-		return new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
+		EngineOptions options = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
 				new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), camera);
+		options.getTouchOptions().setNeedsMultiTouch(true);
+		return options;
 	}
 
 	@Override

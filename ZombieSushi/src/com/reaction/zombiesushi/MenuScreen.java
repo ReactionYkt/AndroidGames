@@ -8,6 +8,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.color.Color;
 
 import com.reaction.zombiesushi.core.Screen;
+import com.reaction.zombiesushi.core.ScreenManager;
 import com.reaction.zombiesushi.res.Textures;
 
 public class MenuScreen extends Screen {

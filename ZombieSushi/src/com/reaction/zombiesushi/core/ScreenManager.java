@@ -1,4 +1,4 @@
-package com.reaction.zombiesushi;
+package com.reaction.zombiesushi.core;
 
 import org.andengine.entity.scene.Scene;
 import org.andengine.opengl.font.Font;
