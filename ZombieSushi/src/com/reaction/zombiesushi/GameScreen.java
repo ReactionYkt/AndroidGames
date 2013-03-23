@@ -57,7 +57,7 @@ public class GameScreen extends Screen {
 		
 		MusicFactory.setAssetBasePath("mfx/");
         try {
-                this.music = MusicFactory.createMusicFromAsset(this.game.getMusicManager(), this.game, "wagner_the_ride_of_the_valkyries.ogg");
+                this.music = MusicFactory.createMusicFromAsset(this.game.getMusicManager(), this.game, "theme.ogg");
                 this.music.setLooping(true);
         } catch (IOException e) {
                 Debug.e("Error", e);
