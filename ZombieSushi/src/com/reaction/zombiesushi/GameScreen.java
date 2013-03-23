@@ -57,7 +57,7 @@ public class GameScreen extends Screen {
 		
 		MusicFactory.setAssetBasePath("mfx/");
         try {
-                this.music = MusicFactory.createMusicFromAsset(this.game.getMusicManager(), this.game, "theme.ogg");
+                this.music = MusicFactory.createMusicFromAsset(this.game.getMusicManager(), this.game, "themsdfasdfe.ogg");
                 this.music.setLooping(true);
         } catch (IOException e) {
                 Debug.e("Error", e);
