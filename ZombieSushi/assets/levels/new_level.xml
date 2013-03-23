@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level>
+    <resouces>
+	    <texture-atlas name="atlas.png" />
+	    <background-music name="track.ogg" />
+    </resouces>
+    <background x="0" y="0" width="800" height="480">
+    <layer>
+	    <entity x="0" y="480" width="200" height="320" />
+	    <entity x="200" y="480" width="200" height="320" />
+	    <entity x="400" y="480" width="200" height="320" />
+	    <entity x="600" y="480" width="200" height="320" />
+    <layer/>
+    <layer>
+        <entity x="0" y="800" width="400" height="160" />
+	    <entity x="400" y="800" width="400" height="160" />
+    </slayer>
+</level>

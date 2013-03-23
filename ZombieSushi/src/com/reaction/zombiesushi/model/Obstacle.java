@@ -14,9 +14,7 @@ import com.reaction.zombiesushi.util.RandomUtil;
 public class Obstacle extends Sprite {
 
 	public enum ObstacleType {
-		THRASH_CAN(1, Textures.backgroundTextureRegion), CAR(2,
-				Textures.backgroundTextureRegion), CORPSES(3,
-				Textures.backgroundTextureRegion);
+		THRASH_CAN(0, Textures.OBSTACLE_REGION);
 
 		private int code;
 		private TextureRegion texture;
@@ -27,7 +25,7 @@ public class Obstacle extends Sprite {
 		}
 
 		public static ObstacleType getRandom() {
-			return valueOf(RandomUtil.getInt(3));
+			return valueOf(RandomUtil.getInt(values().length));
 		}
 
 		public int getCode() {

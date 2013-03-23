@@ -12,7 +12,7 @@ public class AttackButton extends AnimatedSprite {
 	private Cook cook;
 
 	public AttackButton(float posX, float posY, GameScreen screen) {
-		super(posX, posY, Textures.toggleButtonTextureRegion, screen
+		super(posX, posY, Textures.BUTTON_REGION, screen
 				.getVertexBufferObjectManager());
 		this.cook = screen.getCook();
 	}

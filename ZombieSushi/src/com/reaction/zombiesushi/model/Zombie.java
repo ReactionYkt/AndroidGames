@@ -26,7 +26,7 @@ public class Zombie extends AnimatedSprite {
 	public Zombie(float x, float y,
 			VertexBufferObjectManager pVertexBufferObjectManager, Cook cook,
 			GenericPool<Zombie> pool) {
-		super(x, y, Textures.zombieRegion, pVertexBufferObjectManager);
+		super(x, y, Textures.ZOMBIE_REGION, pVertexBufferObjectManager);
 		this.cook = cook;
 		this.dead = false;
 		this.pool = pool;

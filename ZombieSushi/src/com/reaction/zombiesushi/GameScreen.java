@@ -1,5 +1,9 @@
 package com.reaction.zombiesushi;
 
+import java.io.IOException;
+
+import org.andengine.audio.music.Music;
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
@@ -13,6 +17,7 @@ import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.color.Color;
+import org.andengine.util.debug.Debug;
 
 import android.graphics.Typeface;
 import android.util.Log;
@@ -39,6 +44,7 @@ public class GameScreen extends Screen {
 	private static ZombiePool zombiePool;
 	private Font font;
 	private GUI gui;
+	private Music music;
 
 	public GameScreen(SimpleBaseGameActivity game) {
 		super(game);
@@ -48,20 +54,28 @@ public class GameScreen extends Screen {
 				this.game.getTextureManager(), 256, 128,
 				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32);
 		this.font.load();
+		
+		MusicFactory.setAssetBasePath("mfx/");
+        try {
+                this.music = MusicFactory.createMusicFromAsset(this.game.getMusicManager(), this.game, "wagner_the_ride_of_the_valkyries.ogg");
+                this.music.setLooping(true);
+        } catch (IOException e) {
+                Debug.e("Error", e);
+        }
 
 		CAMERA_WIDTH = game.getEngine().getCamera().getWidth();
 		CAMERA_HEIGHT = game.getEngine().getCamera().getHeight();
 		physicsWorld = new PhysicsWorld(new Vector2(0, 15f), false);
 
-		float posX = game.getEngine().getCamera().getCenterX() - Textures.cookTextureRegion.getWidth()/2;
+		float posX = game.getEngine().getCamera().getCenterX() - Textures.COOK_BODY_REGION.getWidth()/2;
 		float posY = game.getEngine().getCamera().getCenterY();
 
-		// static background
+		//static background
 		SpriteBackground bg = new SpriteBackground(new Sprite(0, 0,
-				Textures.backgroundTextureRegion,
+				Textures.BACKGROUND_REGION,
 				game.getVertexBufferObjectManager()));
 
-		// cook sprites
+		//cook sprites
 		cook = new Cook(posX, posY, this);
 		zombiePool = new ZombiePool(game, cook);
 		AnimatedSprite cookFeet = cook.getFeet();
@@ -80,10 +94,9 @@ public class GameScreen extends Screen {
 		Level level = null;
 
 		try {
-			level = new Level(Textures.level1Layer1Atlas,
-					Textures.level1Layer2Atlas, game, "level.xml");
-			levelLoader = new LevelLoader(game.getVertexBufferObjectManager(),
-					level);
+			level = new Level(Textures.LEVEL1_LAYER1_ATLAS,
+					Textures.LEVEL1_LAYER2_ATLAS, game, "level.xml");
+			levelLoader = new LevelLoader(level);
 			levelLoader.loadLevel();
 			level.setFirstLayerSpeed(25);
 			level.setSecondLayerSpeed(50);
@@ -105,6 +118,7 @@ public class GameScreen extends Screen {
 
 	@Override
 	public Scene run() {
+		this.music.play();
 		return this.scene;
 	}
 

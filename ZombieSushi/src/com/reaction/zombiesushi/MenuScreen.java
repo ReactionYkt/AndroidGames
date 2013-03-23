@@ -16,10 +16,10 @@ public class MenuScreen extends Screen {
 	public MenuScreen(final SimpleBaseGameActivity game) {
 		super(game);
 		scene.setBackground(new Background(Color.CYAN));
-		float posX = game.getEngine().getCamera().getCenterX() - Textures.startButtonTextureRegion.getWidth()/2;
-		float posY = game.getEngine().getCamera().getCenterY() - Textures.startButtonTextureRegion.getHeight()/2;
+		float posX = game.getEngine().getCamera().getCenterX() - Textures.START_BUTTON_REGION.getWidth()/2;
+		float posY = game.getEngine().getCamera().getCenterY() - Textures.START_BUTTON_REGION.getHeight()/2;
 		Sprite startButton = new Sprite(posX, posY, 
-										Textures.startButtonTextureRegion,
+										Textures.START_BUTTON_REGION,
 										game.getVertexBufferObjectManager()){
 			
 			@Override

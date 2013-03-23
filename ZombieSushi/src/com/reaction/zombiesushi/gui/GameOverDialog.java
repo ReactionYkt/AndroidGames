@@ -13,7 +13,7 @@ public class GameOverDialog extends Sprite {
 	private GameScreen screen;
 	
 	public GameOverDialog(float posX, float posY, GameScreen screen) {
-		super(posX, posY, Textures.gameOverTextureRegion, screen
+		super(posX, posY, Textures.GAME_OVER_REGION, screen
 				.getVertexBufferObjectManager());
 		this.screen = screen;
 	}

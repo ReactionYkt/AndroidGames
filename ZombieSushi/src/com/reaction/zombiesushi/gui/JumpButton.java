@@ -12,7 +12,7 @@ public class JumpButton extends AnimatedSprite {
 	private Cook cook;
 
 	public JumpButton(float posX, float posY, GameScreen screen) {
-		super(posX, posY, Textures.toggleButtonTextureRegion, screen
+		super(posX, posY, Textures.BUTTON_REGION, screen
 				.getVertexBufferObjectManager());
 		this.cook = screen.getCook();
 	}

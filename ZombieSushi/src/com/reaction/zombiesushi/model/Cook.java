@@ -27,9 +27,9 @@ public class Cook {
 
 	public Cook(float posX, float posY, GameScreen screen) {
 		this.screen = screen;
-		body = new AnimatedSprite(-38, -99, Textures.cookTextureRegion,
+		body = new AnimatedSprite(-38, -99, Textures.COOK_BODY_REGION,
 				screen.getVertexBufferObjectManager());
-		this.feet = new AnimatedSprite(posX, posY, Textures.feetTextureRegion,
+		this.feet = new AnimatedSprite(posX, posY, Textures.COOK_FEET_REGION,
 				screen.getVertexBufferObjectManager());
 		feet.attachChild(body);
 		this.bodyBound = new Rectangle(50, 62, 73, 57,

@@ -6,7 +6,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -21,8 +20,7 @@ public class LevelLoader {
 	private DocumentBuilderFactory dbf;
 	private final Level level;
 
-	public LevelLoader(VertexBufferObjectManager vertexBufferObjectManager,
-			Level level) {
+	public LevelLoader(Level level) {
 		dbf = DocumentBuilderFactory.newInstance();
 		this.level = level;
 		try {
