@@ -52,12 +52,12 @@ public class LevelLoader {
 	}
 
 	private void putObject(Element element) {
-		float x = NumberUtils.stringToFloat(element.getAttribute("x"));
-		float y = NumberUtils.stringToFloat(element.getAttribute("y"));
-		float width = NumberUtils.stringToFloat(element.getAttribute("width"));
-		float height = NumberUtils.stringToFloat(element.getAttribute("height"));
-		int type = NumberUtils.stringToInt(element.getAttribute("type"));
-		int depth = NumberUtils.stringToInt(element.getAttribute("layer"));
+		float x = NumberUtil.stringToFloat(element.getAttribute("x"));
+		float y = NumberUtil.stringToFloat(element.getAttribute("y"));
+		float width = NumberUtil.stringToFloat(element.getAttribute("width"));
+		float height = NumberUtil.stringToFloat(element.getAttribute("height"));
+		int type = NumberUtil.stringToInt(element.getAttribute("type"));
+		int depth = NumberUtil.stringToInt(element.getAttribute("layer"));
 		switch (depth) {
 			case 1:
 				level.addSpriteToFirstLayer(Textures.getTextureRegionByType(1, type), x, y, width, height);

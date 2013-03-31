@@ -49,7 +49,7 @@ public class Zombie extends AnimatedSprite {
 			}
 		}
 		if (pool != null) {
-			if (this.getX() + this.getWidth() < 0 || this.getY() > 480) {
+			if (this.getX() + this.getWidth() < 0) {
 				this.setVisible(false);
 				this.setIgnoreUpdate(true);
 				this.pool.recyclePoolItem(this);

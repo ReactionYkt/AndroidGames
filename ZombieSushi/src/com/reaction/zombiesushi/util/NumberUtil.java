@@ -1,6 +1,10 @@
 package com.reaction.zombiesushi.util;
 
-public class NumberUtils {
+import java.util.Random;
+
+public class NumberUtil {
+	
+	private static Random generator = new Random();
 
 	public static int stringToInt(String string) {
 		int value;
@@ -21,5 +25,10 @@ public class NumberUtils {
 		}
 		return value;
 	}
+	
+	public static int getRandomInt(int limit){
+		return generator.nextInt(limit);
+	}
+
 
 }

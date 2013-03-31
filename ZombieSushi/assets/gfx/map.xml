@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<level>
+	<resources>
+		<atlas filename="atlas.png" />
+		<music filename="theme.ogg" />
+	</resources>
+	<background x="0" y="0" width="800" height="480">
+	<layer>
+		<entity x = "0" y = "481" w = "400" h = "200"/>
+		<entity x = "0" y = "682" w = "400" h = "200"/>
+		<entity x = "401" y = "481" w = "400" h = "200"/>
+	</layer>
+	<layer>
+		<entity x = "801" y = "0" w = "200" h = "150"/>
+		<entity x = "801" y = "151" w = "200" h = "150"/>
+		<entity x = "401" y = "682" w = "200" h = "150"/>
+	</layer>
+	<ground>
+	<ground>
+		<entity x = "802" y = "504" w = "100" h = "75"/>
+		<entity x = "802" y = "580" w = "100" h = "75"/>
+		<entity x = "602" y = "783" w = "100" h = "75"/>
+	</ground>
+	<obstacles>
+		<entity x = "801" y = "302" w = "100" h = "100"/>
+		<entity x = "802" y = "403" w = "100" h = "100"/>
+		<entity x = "602" y = "682" w = "100" h = "100"/>
+	</obstacles>
+</level>

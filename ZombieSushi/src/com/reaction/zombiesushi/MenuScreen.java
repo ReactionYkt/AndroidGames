@@ -4,7 +4,6 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.color.Color;
 
 import com.reaction.zombiesushi.core.Screen;
@@ -13,7 +12,7 @@ import com.reaction.zombiesushi.res.Textures;
 
 public class MenuScreen extends Screen {
 
-	public MenuScreen(final SimpleBaseGameActivity game) {
+	public MenuScreen(final MainActivity game) {
 		super(game);
 		scene.setBackground(new Background(Color.CYAN));
 		float posX = game.getEngine().getCamera().getCenterX() - Textures.START_BUTTON_REGION.getWidth()/2;

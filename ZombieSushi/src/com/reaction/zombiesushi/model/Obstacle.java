@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
 import com.reaction.zombiesushi.GameScreen;
 import com.reaction.zombiesushi.res.Textures;
-import com.reaction.zombiesushi.util.RandomUtil;
+import com.reaction.zombiesushi.util.NumberUtil;
 
 public class Obstacle extends Sprite {
 
@@ -25,7 +25,7 @@ public class Obstacle extends Sprite {
 		}
 
 		public static ObstacleType getRandom() {
-			return valueOf(RandomUtil.getInt(values().length));
+			return valueOf(NumberUtil.getRandomInt(values().length));
 		}
 
 		public int getCode() {

@@ -1,14 +1,14 @@
 package com.reaction.zombiesushi.core;
 
 import org.andengine.entity.scene.Scene;
-import org.andengine.ui.activity.SimpleBaseGameActivity;
+import com.reaction.zombiesushi.MainActivity;
 
 public abstract class Screen {
 
 	protected Scene scene;
-	protected final SimpleBaseGameActivity game;
+	protected final MainActivity game;
 
-	public Screen(SimpleBaseGameActivity game) {
+	public Screen(MainActivity game) {
 		this.game = game;
 		this.scene = new Scene();
 	}

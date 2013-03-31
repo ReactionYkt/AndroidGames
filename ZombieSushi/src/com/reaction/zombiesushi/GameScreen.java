@@ -7,20 +7,16 @@ import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.SpriteBackground;
 import org.andengine.entity.sprite.AnimatedSprite;
-import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsFactory;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
-import org.andengine.ui.activity.SimpleBaseGameActivity;
 import org.andengine.util.color.Color;
 import org.andengine.util.debug.Debug;
 
 import android.graphics.Typeface;
-import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -28,11 +24,11 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.reaction.zombiesushi.core.Screen;
 import com.reaction.zombiesushi.gui.GUI;
 import com.reaction.zombiesushi.model.Cook;
-import com.reaction.zombiesushi.model.Level;
+import com.reaction.zombiesushi.model.Layer;
 import com.reaction.zombiesushi.model.Zombie;
 import com.reaction.zombiesushi.res.Textures;
 import com.reaction.zombiesushi.util.GameScreenUpdateHandler;
-import com.reaction.zombiesushi.util.LevelLoader;
+import com.reaction.zombiesushi.util.Level;
 import com.reaction.zombiesushi.util.ZombiePool;
 
 public class GameScreen extends Screen {
@@ -45,8 +41,9 @@ public class GameScreen extends Screen {
 	private Font font;
 	private GUI gui;
 	private Music music;
+	private Level level;
 
-	public GameScreen(SimpleBaseGameActivity game) {
+	public GameScreen(MainActivity game) {
 		super(game);
 		scene.registerUpdateHandler(new GameScreenUpdateHandler(this));
 		
@@ -71,9 +68,9 @@ public class GameScreen extends Screen {
 		float posY = game.getEngine().getCamera().getCenterY();
 
 		//static background
-		SpriteBackground bg = new SpriteBackground(new Sprite(0, 0,
+		/*SpriteBackground bg = new SpriteBackground(new Sprite(0, 0,
 				Textures.BACKGROUND_REGION,
-				game.getVertexBufferObjectManager()));
+				game.getVertexBufferObjectManager()));*/
 
 		//cook sprites
 		cook = new Cook(posX, posY, this);
@@ -90,7 +87,7 @@ public class GameScreen extends Screen {
 		PhysicsFactory.createBoxBody(this.physicsWorld, ground,
 				BodyType.StaticBody, wallFixtureDef);
 
-		LevelLoader levelLoader = null;
+		/*LevelLoader levelLoader = null;
 		Level level = null;
 
 		try {
@@ -105,7 +102,15 @@ public class GameScreen extends Screen {
 		}
 		scene.setBackground(bg);
 		scene.attachChild(level.getFirstLayer());
-		scene.attachChild(level.getSecondLayer());
+		scene.attachChild(level.getSecondLayer());*/
+		
+		level = Level.loadLevel("");
+		
+		scene.setBackground(level.getBackground());
+		for(Layer layer: level.getLayers()){
+			scene.attachChild(layer.getLayerEntity());
+		}
+		
 		scene.attachChild(ground);
 		scene.attachChild(cookFeet);
 		scene.registerUpdateHandler(physicsWorld);
@@ -126,7 +131,7 @@ public class GameScreen extends Screen {
 	public void destroy() {
 	}
 
-	public SimpleBaseGameActivity getGame() {
+	public MainActivity getGame() {
 		return this.game;
 	}
 	
@@ -152,6 +157,10 @@ public class GameScreen extends Screen {
 	
 	public void showGameOver(){
 		this.gui.gameOver();
+	}
+	
+	public Level getLevel(){
+		return this.level;
 	}
 
 	public void hideGUI(){
