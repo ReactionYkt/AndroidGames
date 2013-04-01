@@ -10,6 +10,7 @@ import org.andengine.ui.activity.SimpleBaseGameActivity;
 
 import com.reaction.zombiesushi.core.ScreenManager;
 import com.reaction.zombiesushi.res.Textures;
+import com.reaction.zombiesushi.util.ResourceManager;
 
 public class MainActivity extends SimpleBaseGameActivity {
 	
@@ -26,6 +27,7 @@ public class MainActivity extends SimpleBaseGameActivity {
 		EngineOptions options = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, 
 				new RatioResolutionPolicy(CAMERA_WIDTH, CAMERA_HEIGHT), camera);
 		options.getTouchOptions().setNeedsMultiTouch(true);
+		options.getAudioOptions().getMusicOptions().setNeedsMusic(true);
 		return options;
 	}
 
@@ -34,6 +36,7 @@ public class MainActivity extends SimpleBaseGameActivity {
 		ScreenManager.init(this);
 		Textures.init(this);
 		Textures.load();
+		ResourceManager.init(this);
 		menuScreen = new MenuScreen(this);
 	}
 

@@ -14,5 +14,5 @@
     <layer>
         <entity x="0" y="800" width="400" height="160" />
 	    <entity x="400" y="800" width="400" height="160" />
-    </slayer>
+    </layer>
 </level>

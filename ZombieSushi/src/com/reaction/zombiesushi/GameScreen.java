@@ -1,9 +1,6 @@
 package com.reaction.zombiesushi;
 
-import java.io.IOException;
-
 import org.andengine.audio.music.Music;
-import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.camera.BoundCamera;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
@@ -14,9 +11,9 @@ import org.andengine.opengl.font.Font;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.vbo.VertexBufferObjectManager;
 import org.andengine.util.color.Color;
-import org.andengine.util.debug.Debug;
 
 import android.graphics.Typeface;
+import android.util.Log;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
@@ -52,13 +49,13 @@ public class GameScreen extends Screen {
 				Typeface.create(Typeface.DEFAULT, Typeface.BOLD), 32);
 		this.font.load();
 		
-		MusicFactory.setAssetBasePath("mfx/");
+		/*MusicFactory.setAssetBasePath("mfx/");
         try {
                 this.music = MusicFactory.createMusicFromAsset(this.game.getMusicManager(), this.game, "theme.ogg");
                 this.music.setLooping(true);
         } catch (IOException e) {
                 Debug.e("Error", e);
-        }
+        }*/
 
 		CAMERA_WIDTH = game.getEngine().getCamera().getWidth();
 		CAMERA_HEIGHT = game.getEngine().getCamera().getHeight();
@@ -104,7 +101,9 @@ public class GameScreen extends Screen {
 		scene.attachChild(level.getFirstLayer());
 		scene.attachChild(level.getSecondLayer());*/
 		
-		level = Level.loadLevel("");
+		level = Level.loadLevel("map", this.game, this.physicsWorld);
+		
+		this.music = level.getMusic();
 		
 		scene.setBackground(level.getBackground());
 		for(Layer layer: level.getLayers()){
@@ -118,7 +117,7 @@ public class GameScreen extends Screen {
 		gui.drawLives(cook.getHealth());
 		BoundCamera camera = (BoundCamera) game.getEngine().getCamera();
 		camera.setHUD(gui.getHud());
-		
+		Log.d("status", "ok");
 	}
 
 	@Override

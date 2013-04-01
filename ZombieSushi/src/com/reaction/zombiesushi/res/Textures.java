@@ -55,7 +55,9 @@ public class Textures {
 
 	public static void init(final SimpleBaseGameActivity activity) {
 		Log.i("ZombieSushi", "onLoadResources");
-
+		
+		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+		
 		START_BUTTON_ATLAS = new BitmapTextureAtlas(
 				activity.getTextureManager(), 220, 30);
 		START_BUTTON_REGION = BitmapTextureAtlasTextureRegionFactory
@@ -127,12 +129,12 @@ public class Textures {
 		HEART_TEXTURE_REGION = TextureRegionFactory.extractFromTexture(
 				HEART_ATLAS, 0, 0, 8, 16);
 
-		OBSTACLE_ATLAS = new BitmapTextureAtlas(activity.getTextureManager(),
+		/*OBSTACLE_ATLAS = new BitmapTextureAtlas(activity.getTextureManager(),
 				200, 200, TextureOptions.BILINEAR);
 		BitmapTextureAtlasTextureRegionFactory.createFromAsset(
 				OBSTACLE_ATLAS, activity, "obstacle.png", 0, 0);
 		OBSTACLE_REGION = TextureRegionFactory.extractFromTexture(
-				OBSTACLE_ATLAS, 0, 0, 200, 200);
+				OBSTACLE_ATLAS, 0, 0, 200, 200);*/
 		}
 
 	public static void load() {
@@ -146,7 +148,7 @@ public class Textures {
 		ZOMBIE_ATLAS.load();
 		HEART_ATLAS.load();
 		GAME_OVER_ATLAS.load();
-		OBSTACLE_ATLAS.load();
+//		OBSTACLE_ATLAS.load();
 	}
 
 	public static ITextureRegion getTextureRegionByType(int layer, int type) {
