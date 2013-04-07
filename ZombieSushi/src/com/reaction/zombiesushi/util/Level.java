@@ -9,6 +9,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
 import org.andengine.entity.scene.background.SpriteBackground;
+import org.andengine.entity.sprite.Sprite;
 import org.andengine.extension.physics.box2d.PhysicsWorld;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -63,11 +64,13 @@ public class Level {
 			level = new Level(activity, physicsWorld);
 			Element root = document.getDocumentElement();
 			Element resources = (Element) getResourceNode(root);
-			Element backgroundElement = (Element) getElementByTag(root, BACKGROUND_TAG);
+			Element backgroundElement = (Element) getElementByTag(root,
+					BACKGROUND_TAG);
 			NodeList layerNodes = root.getElementsByTagName(LAYER_TAG);
 			NodeList obstaclesNodes = root.getElementsByTagName(OBSTACLES_TAG);
 			level.loadTextureAtlas(getElementByTag(resources, ATLAS_TAG));
 			level.loadMusic(getElementByTag(resources, MUSIC_TAG));
+			level.setBackground(backgroundElement);
 			level.setLayers(layerNodes);
 			level.setObstaclesRegions(obstaclesNodes);
 		} catch (ParserConfigurationException pce) {
@@ -81,8 +84,8 @@ public class Level {
 	}
 
 	private static Element getElementByTag(Element resourceNode, String tag) {
-		Element atlasElement = (Element) resourceNode.getElementsByTagName(
-				tag).item(0);
+		Element atlasElement = (Element) resourceNode.getElementsByTagName(tag)
+				.item(0);
 		return atlasElement;
 	}
 
@@ -100,35 +103,44 @@ public class Level {
 					.getAttribute("velocity"));
 			int maxGapWidth = NumberUtil.stringToInt(layer
 					.getAttribute("maxGapWidth"));
-			TextureRegion[] layerRegions = parseTextureRegions(objects);
+			TextureRegion[] layerRegions = parseTextureRegions(objects,
+					this.atlas);
 			layers[i] = new Layer(layerRegions, velocity, this.activity,
 					maxGapWidth);
 		}
 	}
-	
-	private void setBackground(Element root){
-		
+
+	private void setBackground(Element root) {
+		this.background = new SpriteBackground(new Sprite(0, 0,
+				parseTextureRegion(root, this.atlas),
+				this.activity.getVertexBufferObjectManager()));
 	}
 
 	private void setObstaclesRegions(NodeList obstaclesNodes) {
-		Obstacle.init(parseTextureRegions(obstaclesNodes));
 		this.obstaclePool = new ObstaclePool(physicsWorld,
-				activity.getVertexBufferObjectManager());
+				activity.getVertexBufferObjectManager(), parseTextureRegions(
+						obstaclesNodes, atlas));
 	}
 
-	private TextureRegion[] parseTextureRegions(NodeList objects) {
-		int layerSize = objects.getLength();
+	private static TextureRegion[] parseTextureRegions(NodeList nodes,
+			BitmapTextureAtlas atlas) {
+		int layerSize = nodes.getLength();
 		TextureRegion[] regions = new TextureRegion[layerSize];
 		for (int j = 0; j < layerSize; j++) {
-			Element object = (Element) objects.item(j);
-			int xOffset = NumberUtil.stringToInt(object.getAttribute("x"));
-			int yOffset = NumberUtil.stringToInt(object.getAttribute("y"));
-			int width = NumberUtil.stringToInt(object.getAttribute("w"));
-			int height = NumberUtil.stringToInt(object.getAttribute("h"));
-			regions[j] = TextureRegionFactory.extractFromTexture(this.atlas,
-					xOffset, yOffset, width, height, false);
+			Element element = (Element) nodes.item(j);
+			regions[j] = parseTextureRegion(element, atlas);
 		}
 		return regions;
+	}
+
+	private static TextureRegion parseTextureRegion(Element element,
+			BitmapTextureAtlas atlas) {
+		int xOffset = NumberUtil.stringToInt(element.getAttribute("x"));
+		int yOffset = NumberUtil.stringToInt(element.getAttribute("y"));
+		int width = NumberUtil.stringToInt(element.getAttribute("w"));
+		int height = NumberUtil.stringToInt(element.getAttribute("h"));
+		return TextureRegionFactory.extractFromTexture(atlas, xOffset, yOffset,
+				width, height, false);
 	}
 
 	private void loadTextureAtlas(Element atlasElement) {

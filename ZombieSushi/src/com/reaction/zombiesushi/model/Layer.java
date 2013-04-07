@@ -3,12 +3,13 @@ package com.reaction.zombiesushi.model;
 import org.andengine.entity.Entity;
 import org.andengine.opengl.texture.region.TextureRegion;
 
+import android.util.Log;
+
 import com.reaction.zombiesushi.MainActivity;
-import com.reaction.zombiesushi.util.NumberUtil;
 
 public class Layer {
 
-	private int maxGapWidth = 75;
+	private int gapWidth = 75;
 	private float velocity;
 	private TemplateObjectPool pool;
 	private Entity layerEntity;
@@ -16,24 +17,30 @@ public class Layer {
 
 	public Layer(TextureRegion[] templates, float velocity,
 			MainActivity activity, int maxGapWidth) {
-		this.velocity = velocity;
+		this.velocity = -velocity;
 		this.pool = new TemplateObjectPool(templates, activity);
 		this.layerEntity = new Entity(0, 0);
-		this.maxGapWidth = maxGapWidth;
+		this.gapWidth = maxGapWidth;
 	}
 
 	public void spawnObject() {
-		TemplateSprite sprite = pool.obtainPoolItem();
+		TemplateSprite sprite = null;
 		if (lastSprite == null) {
+			sprite = pool.obtainPoolItem();
 			sprite.setPosition(0, 0);
-			lastSprite = sprite;
+			Log.d("sprite", "new sprite obtained");
 		} else if (lastSprite.getX() < 800) {
-			sprite.setX(lastSprite.getX() + lastSprite.getWidth()
-					+ NumberUtil.getRandomInt(maxGapWidth));
-			sprite.setVelocityX(velocity);
+			sprite = pool.obtainPoolItem();
+			sprite.setX(lastSprite.getX() + lastSprite.getWidth() + gapWidth);
+			Log.d("sprite", "new sprite obtained");
 		}
-		if (!sprite.hasParent()) {
-			this.layerEntity.attachChild(sprite);
+		if (sprite != null) {
+			if (!sprite.hasParent()) {
+				this.layerEntity.attachChild(sprite);
+			}
+			sprite.setVelocityX(velocity);
+			sprite.enable();
+			lastSprite = sprite;
 		}
 	}
 

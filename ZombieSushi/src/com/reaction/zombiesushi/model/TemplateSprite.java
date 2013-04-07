@@ -15,16 +15,18 @@ public class TemplateSprite extends Sprite {
 		super(x, y, textureRegion, vertexBufferObjectManager);
 		this.pool = pool;
 		this.physicsHandler = new PhysicsHandler(this);
+		this.registerUpdateHandler(physicsHandler);
 	}
 
 	@Override
 	protected void onManagedUpdate(float pSecondsElapsed) {
 		if(this.getX() + this.getWidth() < 0){
 			this.pool.recyclePoolItem(this);
+			this.disable();
 		}
 		super.onManagedUpdate(pSecondsElapsed);
 	}
-	
+
 	public void enable(){
 		this.setIgnoreUpdate(false);
 		this.setVisible(true);

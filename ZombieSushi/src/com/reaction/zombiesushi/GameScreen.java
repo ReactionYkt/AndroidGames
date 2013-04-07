@@ -107,6 +107,11 @@ public class GameScreen extends Screen {
 		
 		scene.setBackground(level.getBackground());
 		for(Layer layer: level.getLayers()){
+			layer.spawnObject();
+			layer.spawnObject();
+			layer.spawnObject();
+			layer.spawnObject();
+			layer.spawnObject();
 			scene.attachChild(layer.getLayerEntity());
 		}
 		

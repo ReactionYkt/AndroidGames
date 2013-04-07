@@ -9,12 +9,10 @@ import org.andengine.opengl.vbo.VertexBufferObjectManager;
 
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef.BodyType;
-import com.reaction.zombiesushi.util.NumberUtil;
 import com.reaction.zombiesushi.util.ObstaclePool;
 
 public class Obstacle extends Sprite {
 
-	private static TextureRegion[] STATIC_REGIONS;
 	private Body physicBody;
 	private ObstaclePool pool;
 
@@ -30,15 +28,6 @@ public class Obstacle extends Sprite {
 				physicBody, true, true));
 		this.physicBody.setLinearVelocity(-50, 0);
 		this.pool = obstaclePool;
-	}
-	
-	public static void init(TextureRegion[] regions){
-		STATIC_REGIONS = regions;
-	}
-	
-	public static TextureRegion getRandomRegion(){
-		int len = STATIC_REGIONS.length;
-		return STATIC_REGIONS[NumberUtil.getRandomInt(len)];
 	}
 	
 	public void enable(){
